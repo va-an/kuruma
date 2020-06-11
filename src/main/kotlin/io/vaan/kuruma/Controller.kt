@@ -3,7 +3,6 @@ package io.vaan.kuruma
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
-import kotlin.random.Random
 
 @RestController
 @RequestMapping("api/v1/cars")
@@ -15,8 +14,7 @@ class Controller {
     @PostMapping
     fun create(@RequestBody kuruma: Kuruma) {
         logger.info("create $kuruma")
-        val randomId = Random.nextLong(100)
-        repository.put(randomId, kuruma.copy(id = randomId))
+        repository.put(kuruma.id, kuruma)
     }
 
     @GetMapping
@@ -28,13 +26,12 @@ class Controller {
     @GetMapping("{id}")
     fun findById(@PathVariable("id") id: Long): Kuruma? {
         logger.info("findById $id")
-        val currentNumberOfWheels: Int? = repository.get(id)?.numberOfWheels
-        return repository.get(id)?.copy(numberOfWheels = currentNumberOfWheels!! * 2)
+        return repository.get(id)
     }
 
     @DeleteMapping("/{id}")
     fun deleteById(@PathVariable("id") id: Long) {
         logger.info("deleteById $id")
-        repository.clear()
+        repository.remove(id)
     }
 }
