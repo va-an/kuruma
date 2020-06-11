@@ -14,19 +14,35 @@ class Controller {
     @PostMapping
     fun create(@RequestBody kuruma: Kuruma) {
         logger.info("create $kuruma")
-        repository.put(kuruma.id, kuruma)
+        repository[kuruma.id] = kuruma
     }
 
     @GetMapping
-    fun findAll(): Collection<Kuruma> {
-        logger.info("findAll")
-        return repository.values
+    fun findByFilter(
+        @RequestParam numberOfWheels: Int?,
+        @RequestParam color: String?
+    ): Collection<Kuruma> {
+        logger.info("findBy")
+
+        val values = repository.values
+
+        val filterByifNumberOfWheels =
+            if (numberOfWheels != null) {
+                values.filter { it.numberOfWheels == numberOfWheels }
+            } else values
+
+        val filterByColor =
+            if (color != null) {
+                filterByifNumberOfWheels.filter { it.color == color }
+            } else filterByifNumberOfWheels
+
+       return filterByColor
     }
 
     @GetMapping("{id}")
     fun findById(@PathVariable("id") id: Long): Kuruma? {
         logger.info("findById $id")
-        return repository.get(id)
+        return repository[id]
     }
 
     @DeleteMapping("/{id}")
