@@ -16,9 +16,9 @@ API:
 ```
 
 
-* найти машину по id - GET /api/v1/cars/<id>
+* найти машину по id - GET /api/v1/cars/\<id>
 * найти все машины - GET /api/v1/cars/
-* удалить машину по id - DELETE /api/v1/cars/<id>
+* удалить машину по id - DELETE /api/v1/cars/\<id>
 Сейчас есть 3 бага.
 
 ---
